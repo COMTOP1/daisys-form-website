@@ -1,0 +1,55 @@
+<mjml>
+    <mj-body>
+        <mj-section background-color="#4a4a4a" text-align="center">
+            <mj-image
+                    src="https://github.com/COMTOP1/daisys-form-website/blob/main/public/cheese-and-wine-logo.png?raw=true"></mj-image>
+        </mj-section>
+        <mj-section>
+            <mj-column>
+                <mj-text font-size="20px" font-weight="bold">
+                    Your booking is confirmed for {{dateAndTime}}, reference: {{bookingRef}}
+                </mj-text>
+
+                <mj-text>
+                    Hello {{name}},
+                </mj-text>
+
+                <mj-text>
+                    Thank you so much for booking a Cheese and Wine evening at Daisy's - we are really look forward to
+                    welcoming you &#129472; &#127863;
+                </mj-text>
+
+                <mj-text>
+                    Pricing &amp; payment:
+                    <ul>
+                        <li>£25 per person with payment required once your table has been confirmed.</li>
+                        <li>Our preferred method of payment is via PayPal please to: <a
+                                href="mailto:rollsjj@hotmail.com">rollsjj@hotmail.com
+                        </a> (Jeremy Rolls) - selecting ‘Friends &amp; Family’ and include your full name and the
+                            booking reference.
+                        </li>
+                        <li>Alternatively, payment can be made in cash at the coffee shop.</li>
+                    </ul>
+                </mj-text>
+
+                <mj-text>
+                    The price includes your cheese and charcuterie board with breads, crackers, nuts, fruit, etc.
+                </mj-text>
+
+                <mj-text>
+                    Starters, desserts, and a carefully selected range of complementing wines will be available to
+                    purchase on the evening, we also have beers, ciders, a full range of soft drinks and hot beverages
+                    will also be available to purchase.
+                </mj-text>
+
+                <mj-text>
+                    We look forward to welcoming you for an indulgent evening of exceptional food and wine.
+                </mj-text>
+
+                <mj-text>
+                    Team Daisy &#127804;
+                </mj-text>
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>

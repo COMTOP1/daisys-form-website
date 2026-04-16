@@ -1,0 +1,31 @@
+<mjml>
+    <mj-body>
+        <mj-section background-color="#4a4a4a" text-align="center">
+            <mj-image
+                    src="https://github.com/COMTOP1/daisys-form-website/blob/main/public/cheese-and-wine-logo.png?raw=true"></mj-image>
+        </mj-section>
+        <mj-section>
+            <mj-column>
+                <mj-text font-size="20px" font-weight="bold">
+                    Your booking was unsuccessful for {{dateAndTime}}
+                </mj-text>
+
+                <mj-text>
+                    Hello {{name}},
+                </mj-text>
+
+                <mj-text>
+                    Unfortunately your booking for {{dateAndTime}} was unsuccessful.
+                </mj-text>
+
+                <mj-text>
+                    We would love to have you on another exceptional Cheese &amp; Wine evening!
+                </mj-text>
+
+                <mj-text>
+                    Team Daisy &#127804;
+                </mj-text>
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>
