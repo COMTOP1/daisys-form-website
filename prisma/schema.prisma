@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum BookingStatus {
+  PENDING // user submitted
+  TENTATIVE // tables assigned but not confirmed
+  CONFIRMED // accepted
+  REJECTED // declined
+}
+
+enum AssignmentStatus {
+  TENTATIVE
+  CONFIRMED
+}
+
+model auditLogs {
+  id        Int      @id @default(autoincrement())
+  timestamp DateTime @default(now()) @db.Timestamp(0)
+  userId    Int
+}
+
+model bookings {
+  id            Int                       @id @default(autoincrement())
+  name          String
+  email         String
+  phone         String
+  people        Int
+  bookingDateId Int
+  comment       String?
+  status        BookingStatus             @default(PENDING)
+  emailSentAt   DateTime?
+  deletedAt     DateTime?
+  createdAt     DateTime                  @default(now()) @db.Timestamp(0)
+  updatedAt     DateTime                  @default(now()) @db.Timestamp(0)
+  bookingDate   availableDates            @relation("bookingDate", fields: [bookingDateId], references: [id])
+  assignment    bookingTableAssignments[]
+}
+
+model availableDates {
+  id        Int        @id @default(autoincrement())
+  date      DateTime
+  maxSpaces Int        @default(20)
+  bookedUp  Boolean    @default(false)
+  bookings  bookings[] @relation("bookingDate")
+}
+
+model tables {
+  id          Int                       @id @default(autoincrement())
+  name        String
+  minSeats    Int
+  maxSeats    Int
+  assignments bookingTableAssignments[]
+}
+
+model bookingTableAssignments {
+  id        Int              @id @default(autoincrement())
+  bookingId Int
+  tableId   Int
+  seats     Int // how many people sit at this table
+  status    AssignmentStatus @default(TENTATIVE)
+
+  booking bookings @relation(fields: [bookingId], references: [id])
+  table   tables   @relation(fields: [tableId], references: [id])
+
+  @@unique([bookingId, tableId])
+}
