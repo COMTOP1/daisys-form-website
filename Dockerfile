@@ -4,13 +4,13 @@ RUN apt-get update -y && apt-get install -y openssl
 
 WORKDIR /app
 
-COPY ./edit-backend/package*.json ./
+COPY ./package*.json ./
 
 RUN npm ci
 
 RUN npx next telemetry disable
 
-COPY ./edit-backend /app
+COPY ./ /app
 
 ARG DATABASE_URL
 ENV DATABASE_URL=$DATABASE_URL
