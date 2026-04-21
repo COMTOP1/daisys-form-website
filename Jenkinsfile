@@ -11,6 +11,7 @@ pipeline {
 
   environment {
     DOCKER_BUILDKIT = '1'
+    VAULT_ADDR = 'https://vault.YWRtaW51cmxz.bswdi.co.uk'
   }
 
   stages {
