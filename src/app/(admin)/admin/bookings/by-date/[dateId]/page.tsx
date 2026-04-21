@@ -41,9 +41,9 @@ export default async function BookingByDate({
     )
   }
 
-  for (let i = 0; i < date.bookings.length; i++) {
-    date.bookings[i].createdAtFormatted = bookingsDateFormatter.format(new Date(date.bookings[i].createdAt))
-  }
+  // for (let i = 0; i < date.bookings.length; i++) {
+  //   date.bookings[i].createdAtFormatted = bookingsDateFormatter.format(new Date(date.bookings[i].createdAt))
+  // }
 
   return (
     <div className="flex min-h-screen items-center justify-center font-sans baseColour">
