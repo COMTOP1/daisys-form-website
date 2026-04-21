@@ -1,19 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Menu,
   X,
   Home,
   BookOpen,
   NewspaperIcon,
-  IdCard,
   Users,
-  LogOut,
   Files,
   FileChartPie,
   Gavel,
-  SquareUserRound, Calendar,
+  Calendar,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
