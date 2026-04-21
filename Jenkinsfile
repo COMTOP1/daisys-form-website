@@ -29,7 +29,7 @@ pipeline {
                     )
 
                     def json = readJSON text: response.content
-                    env.DATABASE_URL = json.data.data.database-url
+                    env.DATABASE_URL = json.data.data['database-url']
                 }
             }
         }
