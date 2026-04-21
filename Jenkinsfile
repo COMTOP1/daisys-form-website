@@ -14,12 +14,32 @@ pipeline {
   }
 
   stages {
+    stage('Fetch Secrets') {
+        steps {
+            withCredentials([string(credentialsId: 'vault-ansible', variable: 'VAULT_TOKEN')]) {
+                script {
+                    def response = httpRequest(
+                        customHeaders: [
+                            [maskValue: true, name: 'X-Vault-Token', value: env.VAULT_TOKEN]
+                        ],
+                        httpMode: 'GET',
+                        url: "${VAULT_ADDR}/v1/kv/data/daisys-form-website-dev",
+                        validResponseCodes: '200'
+                    )
+
+                    def json = readJSON text: response.content
+                    env.DATABASE_URL = json.data.data.database-url
+                }
+            }
+        }
+    }
+
     stage('Build image') {
       steps {
         script {
           def GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H' | head -c 7", returnStdout: true)
           docker.withRegistry('https://' + registryEndpoint) {
-            image = docker.build(imageName, "--build-arg DFW_VERSION_ARG=${env.BRANCH_NAME}-${env.BUILD_ID} --build-arg DFW_GIT_HASH=${GIT_COMMIT_HASH} --no-cache .")
+            image = docker.build(imageName, "--build-arg DFW_VERSION_ARG=${env.BRANCH_NAME}-${env.BUILD_ID} --build-arg DFW_GIT_HASH=${GIT_COMMIT_HASH} --build-arg DATABASE_URL=${DATABASE_URL} --no-cache .")
           }
         }
       }
