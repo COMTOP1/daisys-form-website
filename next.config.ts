@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
       NEXT_PUBLIC_GIT_COMMIT: gitCommit,
       NEXT_PUBLIC_RELEASE: version,
   },
-    output: "standalone",
 };
 
 export default nextConfig;
