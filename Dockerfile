@@ -46,8 +46,7 @@ RUN apt-get update && \
 WORKDIR /app
 
 COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/.next/standalone ./.next/standalone
-COPY --from=build /app/.next/static ./.next/static
+COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
 COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/dist ./dist
