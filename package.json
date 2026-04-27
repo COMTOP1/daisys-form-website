@@ -17,8 +17,8 @@
     "handlebars": "^4.7.8",
     "lucide-react": "^1.7.0",
     "mjml": "^5.0.0-beta.2",
-    "next": "^16.2.1",
-    "nodemailer": "^8.0.3",
+    "next": "16.2.3",
+    "nodemailer": "8.0.5",
     "prettier": "^3.8.1",
     "react": "19.2.3",
     "react-dom": "19.2.3"
