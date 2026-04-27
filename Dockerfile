@@ -12,8 +12,10 @@ RUN npx next telemetry disable
 
 COPY ./ /app
 
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
+ARG DFW_GIT_HASH
+ENV DFW_GIT_HASH=$DFW_GIT_HASH
+ARG DFW_VERSION_ARG
+ENV DFW_VERSION_ARG=$DFW_VERSION_ARG
 
 RUN --mount=type=secret,id=database_url \
     DATABASE_URL=$(cat /run/secrets/database_url) \
@@ -29,7 +31,7 @@ RUN npx tsc -p tsconfig.cron.json
 
 FROM node:24.12.0-trixie-slim AS runtime
 
-RUN apt-get update -y && apt-get install -y cron openssl
+RUN apt-get update -y && apt-get install -y cron openssl git ca-certificates
 
 WORKDIR /app
 
