@@ -15,9 +15,13 @@ COPY ./ /app
 ARG DATABASE_URL
 ENV DATABASE_URL=$DATABASE_URL
 
-RUN npx prisma generate
+RUN --mount=type=secret,id=database_url \
+    DATABASE_URL=$(cat /run/secrets/database_url) \
+    npx prisma generate
 
-RUN npm run build
+RUN --mount=type=secret,id=database_url \
+    DATABASE_URL=$(cat /run/secrets/database_url) \
+    npm run build
 
 # Compile cron script
 # Make sure tsconfig.cron.json exists in project root
