@@ -3,6 +3,8 @@ import Image from "next/image";
 import React from "react";
 import prisma from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export default async function Bookings() {
   const bookings = await prisma.bookings.findMany({
     include: {

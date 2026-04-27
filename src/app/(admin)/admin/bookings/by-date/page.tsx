@@ -4,6 +4,8 @@ import React from "react";
 import {getDates} from "@/lib/dates";
 import {niceDateFormatter} from "@/lib/dateFormatter";
 
+export const dynamic = "force-dynamic";
+
 export default async function BookingsByDate() {
   const dates = await getDates({includePast: true});
 

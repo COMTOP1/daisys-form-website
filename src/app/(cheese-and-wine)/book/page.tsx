@@ -3,6 +3,8 @@ import Image from "next/image";
 import prisma from "@/lib/prisma";
 import BookingForm from "@/components/BookingForm";
 
+export const dynamic = "force-dynamic";
+
 export default async function BookForm() {
   const availableDates = await prisma.availableDates.findMany({
     where: {
