@@ -40,12 +40,9 @@ pipeline {
         script {
           def GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H' | head -c 7", returnStdout: true)
           docker.withRegistry('https://' + registryEndpoint) {
-            image = docker.build(imageName, """
-                --build-arg DFW_VERSION_ARG=${env.BRANCH_NAME}-${env.BUILD_ID} \
+            image = docker.build(imageName, "--build-arg DFW_VERSION_ARG=${env.BRANCH_NAME}-${env.BUILD_ID} \
                 --build-arg DFW_GIT_HASH=${GIT_COMMIT_HASH} \
-                --secret id=database_url,env=DATABASE_URL \
-                .
-                """
+                --secret id=database_url,env=DATABASE_URL ."
             )
           }
         }
