@@ -1,6 +1,8 @@
 FROM node:24.12.0-trixie-slim AS build
 
-RUN apt-get update -y && apt-get install -y openssl
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends openssl && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -10,7 +12,12 @@ RUN npm ci
 
 RUN npx next telemetry disable
 
-COPY ./ /app
+COPY prisma ./prisma
+COPY tsconfig*.json ./
+COPY next.config.ts ./
+COPY public ./public
+COPY scripts ./scripts
+COPY src ./src
 
 ARG DFW_GIT_HASH
 ENV DFW_GIT_HASH=$DFW_GIT_HASH
@@ -21,22 +28,26 @@ RUN --mount=type=secret,id=database_url \
     DATABASE_URL=$(cat /run/secrets/database_url) \
     npx prisma generate
 
-RUN --mount=type=secret,id=database_url \
-    DATABASE_URL=$(cat /run/secrets/database_url) \
-    npm run build
+RUN npm run build
 
 # Compile cron script
 # Make sure tsconfig.cron.json exists in project root
 RUN npx tsc -p tsconfig.cron.json
 
+RUN npm prune --omit=dev
+
 FROM node:24.12.0-trixie-slim AS runtime
 
-RUN apt-get update -y && apt-get install -y cron openssl git ca-certificates
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        cron openssl ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/.next ./.next
+COPY --from=build /app/.next/standalone ./.next/standalone
+COPY --from=build /app/.next/static ./.next/static
 COPY --from=build /app/public ./public
 COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/dist ./dist
@@ -64,6 +75,13 @@ RUN crontab /etc/cron.d/nextjs-cron
 COPY docker/start.sh /app/start.sh
 
 RUN chmod +x /app/start.sh
+
+RUN useradd -m nodeuser
+
+RUN chown -R nodeuser:nodeuser /app
+RUN chown nodeuser:nodeuser /var/log/cron.log
+
+USER nodeuser
 
 # Start cron in background and then start Next.js server
 ENTRYPOINT ["/app/start.sh"]
