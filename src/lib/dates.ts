@@ -1,36 +1,40 @@
-import {AssignmentStatus, BookingStatus, Prisma} from "../../generated/prisma/client";
+import {
+  AssignmentStatus,
+  BookingStatus,
+  Prisma,
+} from "../../generated/prisma/client";
 import prisma from "@/lib/prisma";
 
 export async function getDates({
-                                    includePast = false,
-                                    page = 1,
-                                    pageSize = 20,
-                                  }: {
+  includePast = false,
+  page = 1,
+  pageSize = 20,
+}: {
   includePast?: boolean;
   page?: number;
   pageSize?: number;
 }): Promise<{
   availableDates: ({
     bookings: {
-      id: number
-      name: string
-      email: string
-      phone: string
-      people: number
-      bookingDateId: number
-      comment: string | null
-      status: BookingStatus
-      emailSentAt: Date | null
-      deletedAt: Date | null
-      createdAt: Date
-      updatedAt: Date
-    }[]
+      id: number;
+      name: string;
+      email: string;
+      phone: string;
+      people: number;
+      bookingDateId: number;
+      comment: string | null;
+      status: BookingStatus;
+      emailSentAt: Date | null;
+      deletedAt: Date | null;
+      createdAt: Date;
+      updatedAt: Date;
+    }[];
   } & {
-    id: number
-    date: Date
-    formattedDate?: string
-    maxSpaces: number
-    bookedUp: boolean
+    id: number;
+    date: Date;
+    formattedDate?: string;
+    maxSpaces: number;
+    bookedUp: boolean;
   })[];
   pagination: {
     page: number;
@@ -42,7 +46,7 @@ export async function getDates({
   if (!includePast) {
     where.date = {
       gt: new Date(),
-    }
+    };
   }
 
   const [dates, totalCount] = await Promise.all([
@@ -68,18 +72,18 @@ export async function getDates({
   };
 }
 
-export async function getDateAndBookings({id}: {id: number}) {
+export async function getDateAndBookings({ id }: { id: number }) {
   const date = await prisma.availableDates.findUnique({
     where: {
       id,
     },
     include: {
       bookings: {
-        include: {assignment: true},
+        include: { assignment: true },
         orderBy: {
           createdAt: "asc",
-        }
-      }
+        },
+      },
     },
   });
 

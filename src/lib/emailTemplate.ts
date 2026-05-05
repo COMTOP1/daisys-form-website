@@ -11,18 +11,18 @@ const templateCache = new Map<string, TemplateCache>();
 
 export async function renderEmailTemplate(
   templateName: string,
-  variables: Record<string, any>
+  variables: Record<string, any>,
 ) {
   let cached = templateCache.get(templateName);
-  console.log(cached)
+  console.log(cached);
 
   if (!cached) {
     const filePath = path.join(
       process.cwd(),
       "src/templates",
-      `${templateName}.mjml`
+      `${templateName}.mjml`,
     );
-    console.log(filePath)
+    console.log(filePath);
 
     const mjmlContent = fs.readFileSync(filePath, "utf-8");
     console.log(mjmlContent);

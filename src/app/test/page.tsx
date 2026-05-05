@@ -1,4 +1,4 @@
-import {renderEmailTemplate} from "@/lib/emailTemplate";
+import { renderEmailTemplate } from "@/lib/emailTemplate";
 
 export default async function TestPage() {
   const html = await renderEmailTemplate("booking-confirmation", {

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 // import toast from "react-hot-toast" if needed
 
 export default function AvailableDatesForm() {
-  const [date, setDate] = useState<string>('');
+  const [date, setDate] = useState<string>("");
   const [maxSpaces, setMaxSpaces] = useState<number>(20);
   const [loading, setLoading] = useState(false);
 
@@ -13,14 +13,14 @@ export default function AvailableDatesForm() {
     if (!date) return;
     setLoading(true);
     try {
-      const res = await fetch('/api/availableDates', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/availableDates", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ date, maxSpaces }),
       });
       if (!res.ok) {
         const err = await res.text();
-        throw new Error(err || 'Failed to create date');
+        throw new Error(err || "Failed to create date");
       }
       // reload to show new date
       window.location.reload();
@@ -33,7 +33,10 @@ export default function AvailableDatesForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-8 flex flex-col space-y-4 max-w-md">
+    <form
+      onSubmit={handleSubmit}
+      className="mt-8 flex flex-col space-y-4 max-w-md"
+    >
       <label className="flex flex-col">
         Date and time
         <input
@@ -55,8 +58,12 @@ export default function AvailableDatesForm() {
           className="mt-1 p-2 border rounded"
         />
       </label>
-      <button type="submit" disabled={loading} className="px-4 py-2 bg-blue-600 text-white rounded">
-        {loading ? 'Adding...' : 'Add Date'}
+      <button
+        type="submit"
+        disabled={loading}
+        className="px-4 py-2 bg-blue-600 text-white rounded"
+      >
+        {loading ? "Adding..." : "Add Date"}
       </button>
     </form>
   );

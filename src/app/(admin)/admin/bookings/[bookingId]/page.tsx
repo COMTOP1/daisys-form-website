@@ -1,12 +1,10 @@
 export default async function Booking({
-                                        params,
-                                      }: {
+  params,
+}: {
   params: Promise<{
     bookingId: string;
   }>;
 }) {
   const resolvedParams = await params;
-  return (
-    <p>{resolvedParams.bookingId}</p>
-  )
+  return <p>{resolvedParams.bookingId}</p>;
 }

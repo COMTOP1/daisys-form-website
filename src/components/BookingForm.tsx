@@ -1,15 +1,19 @@
 "use client";
 
-import React, {useState} from "react";
-import {z} from "zod";
-import {addBooking, print} from "@/app/(cheese-and-wine)/book/handle";
-import {niceDateFormatter} from "@/lib/dateFormatter";
+import React, { useState } from "react";
+import { z } from "zod";
+import { addBooking, print } from "@/app/(cheese-and-wine)/book/handle";
+import { niceDateFormatter } from "@/lib/dateFormatter";
 
-export default function BookingForm({availableDates}: {availableDates: {
-    id: number
-    date: Date
-    maxSpaces: number
-  }[]}) {
+export default function BookingForm({
+  availableDates,
+}: {
+  availableDates: {
+    id: number;
+    date: Date;
+    maxSpaces: number;
+  }[];
+}) {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -22,15 +26,21 @@ export default function BookingForm({availableDates}: {availableDates: {
   const bookingSchema = z.object({
     name: z.string().min(1, "Name is required"),
     email: z.string().email("Invalid email"),
-    phone: z.string().min(1, "Phone is required")
-      .transform(val => val.replace(/\s+/g, ""))
-      .refine(val => /^(\+[1-9])?\d{1,14}$/.test(val), {
+    phone: z
+      .string()
+      .min(1, "Phone is required")
+      .transform((val) => val.replace(/\s+/g, ""))
+      .refine((val) => /^(\+[1-9])?\d{1,14}$/.test(val), {
         message: "Phone number doesn't match formatting",
       }),
-    people: z.preprocess((val) => parseInt(val as string),
-      z.number().int().min(2, "At least 2 people").max(8, "At most 8 people")),
-    date: z.preprocess((val) => parseInt(val as string),
-      z.int().min(0, "Date is required")),
+    people: z.preprocess(
+      (val) => parseInt(val as string),
+      z.number().int().min(2, "At least 2 people").max(8, "At most 8 people"),
+    ),
+    date: z.preprocess(
+      (val) => parseInt(val as string),
+      z.int().min(0, "Date is required"),
+    ),
     comment: z.string().nullable(),
   });
 
@@ -41,9 +51,9 @@ export default function BookingForm({availableDates}: {availableDates: {
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
-    setForm((prev) => ({...prev, [name]: value}));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.SubmitEvent) => {
@@ -61,13 +71,17 @@ export default function BookingForm({availableDates}: {availableDates: {
     console.log("Booking submitted");
     await print(booking);
     await addBooking(booking);
-    window.location.href="/book/thank-you";
+    window.location.href = "/book/thank-you";
   };
 
   return (
     <>
-      <p><i>Please note this booking does not guarantee a table, you will receive a separate email later with the
-        confirmation</i></p>
+      <p>
+        <i>
+          Please note this booking does not guarantee a table, you will receive
+          a separate email later with the confirmation
+        </i>
+      </p>
       {error && <p className="text-red-600 mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="w-full space-y-4">
         <div>
@@ -115,7 +129,7 @@ export default function BookingForm({availableDates}: {availableDates: {
             onChange={handleChange}
             className="w-full border border-gray-300 rounded p-2 text-white"
           >
-            {Array.from({length: 7}, (_, i) => i + 2).map((n) => (
+            {Array.from({ length: 7 }, (_, i) => i + 2).map((n) => (
               <option key={n} value={n}>
                 {n}
               </option>
@@ -135,7 +149,7 @@ export default function BookingForm({availableDates}: {availableDates: {
               <option key={d.id} value={d.id}>
                 {niceDateFormatter.format(new Date(d.date))}
               </option>
-              ))}
+            ))}
           </select>
         </div>
         <div>
@@ -158,5 +172,5 @@ export default function BookingForm({availableDates}: {availableDates: {
         </button>
       </form>
     </>
-  )
+  );
 }
