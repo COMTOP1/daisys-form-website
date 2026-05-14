@@ -37,12 +37,12 @@ export default function DateBookingArrangingPage({
   };
 }) {
   const [submitted, setSubmitted] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [selected, setSelected] = useState(
-    date?.bookings.filter((b) => b.assignment && b.assignment.length > 0) || [],
+    date?.bookings.filter((b) => b.status === "CONFIRMED") || [],
   );
   const [unselected, setUnselected] = useState(
-    date?.bookings.filter((b) => !b.assignment || b.assignment.length === 0) ||
-      [],
+    date?.bookings.filter((b) => b.status !== "CONFIRMED") || [],
   );
 
   const selectedSeats = selected.reduce((sum, b) => sum + b.people, 0);
@@ -72,20 +72,14 @@ export default function DateBookingArrangingPage({
     event.dataTransfer.setData("text/plain", id.toString());
   };
 
-  const handleSubmit = async () => {
-    if (selectedSeats > maxSpaces) {
-      alert("Selected seats are more than the maximum available seats.");
-      console.warn("Selected seats are more than the maximum available seats.");
-      return;
-    }
+  const handleConfirm = async () => {
+    setShowModal(false);
     const response = await fetch("/api/send-booking-emails", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        bookingIds: selected.map(b => b.id),
-        maxSpaces,
-        selectedSeats,
-        dateId: date.id
+        bookingIds: selected.map((b) => b.id),
+        dateId: date.id,
       })
     });
     if (response.ok) {
@@ -95,6 +89,14 @@ export default function DateBookingArrangingPage({
     } else {
       console.error("Failed to process bookings");
     }
+  };
+
+  const handleSubmit = () => {
+    if (selectedSeats > maxSpaces) {
+      alert("Selected seats are more than the maximum available seats.");
+      return;
+    }
+    setShowModal(true);
   };
 
   return (
@@ -159,7 +161,48 @@ export default function DateBookingArrangingPage({
           </ul>
         </div>
       </div>
-      <button onClick={handleSubmit} disabled={submitted}>Submit Selected</button>
+      <button onClick={handleSubmit} disabled={submitted}>
+        Submit Selected
+      </button>
+
+      {showModal && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.6)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 50,
+          }}
+        >
+          <div
+            style={{
+              background: "#2a2a2a",
+              padding: "2rem",
+              borderRadius: "0.5rem",
+              maxWidth: "28rem",
+              width: "100%",
+            }}
+          >
+            <h2 className="text-xl font-semibold mb-2">Confirm submission</h2>
+            <p className="mb-1">
+              You are about to confirm <b>{selected.length}</b> booking
+              {selected.length !== 1 ? "s" : ""} ({selectedSeats} seats) and
+              reject <b>{unselected.length}</b> booking
+              {unselected.length !== 1 ? "s" : ""}.
+            </p>
+            <p className="mb-4">
+              <i>Emails will be sent to all affected customers.</i>
+            </p>
+            <div style={{ display: "flex", gap: "1rem", justifyContent: "flex-end" }}>
+              <button onClick={() => setShowModal(false)}>Cancel</button>
+              <button onClick={handleConfirm}>Confirm</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
