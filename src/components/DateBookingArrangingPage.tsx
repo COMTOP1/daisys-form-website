@@ -80,7 +80,7 @@ export default function DateBookingArrangingPage({
       body: JSON.stringify({
         bookingIds: selected.map((b) => b.id),
         dateId: date.id,
-      })
+      }),
     });
     if (response.ok) {
       const data = await response.json();
@@ -196,7 +196,13 @@ export default function DateBookingArrangingPage({
             <p className="mb-4">
               <i>Emails will be sent to all affected customers.</i>
             </p>
-            <div style={{ display: "flex", gap: "1rem", justifyContent: "flex-end" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: "1rem",
+                justifyContent: "flex-end",
+              }}
+            >
               <button onClick={() => setShowModal(false)}>Cancel</button>
               <button onClick={handleConfirm}>Confirm</button>
             </div>

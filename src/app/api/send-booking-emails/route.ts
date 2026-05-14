@@ -13,12 +13,19 @@ export async function POST(req: Request) {
     });
 
     const selectedSet = new Set(bookingIds as number[]);
-    const selectedBookings = allDateBookings.filter((b) => selectedSet.has(b.id));
-    const unselectedBookings = allDateBookings.filter((b) => !selectedSet.has(b.id));
+    const selectedBookings = allDateBookings.filter((b) =>
+      selectedSet.has(b.id),
+    );
+    const unselectedBookings = allDateBookings.filter(
+      (b) => !selectedSet.has(b.id),
+    );
 
     // Server-side seat validation using DB data
     const maxSpaces = allDateBookings[0]?.bookingDate.maxSpaces ?? 0;
-    const selectedSeats = selectedBookings.reduce((sum, b) => sum + b.people, 0);
+    const selectedSeats = selectedBookings.reduce(
+      (sum, b) => sum + b.people,
+      0,
+    );
     if (selectedSeats > maxSpaces) {
       return new Response(
         JSON.stringify({ error: "Selected seats exceed maximum spaces" }),
@@ -34,7 +41,10 @@ export async function POST(req: Request) {
     // Update selected bookings to CONFIRMED
     if (selectedBookings.length > 0) {
       await prisma.bookings.updateMany({
-        where: { id: { in: selectedBookings.map((b) => b.id) }, deletedAt: null },
+        where: {
+          id: { in: selectedBookings.map((b) => b.id) },
+          deletedAt: null,
+        },
         data: { status: "CONFIRMED", emailSentAt: new Date() },
       });
     }
@@ -58,24 +68,33 @@ export async function POST(req: Request) {
     });
 
     // Send emails only to bookings that hadn't been emailed before this submission
-    for (const booking of allDateBookings.filter((b) => needsEmailIds.has(b.id))) {
+    for (const booking of allDateBookings.filter((b) =>
+      needsEmailIds.has(b.id),
+    )) {
       const isSelected = selectedSet.has(booking.id);
-      const templateName = isSelected ? "booking-confirmation" : "booking-rejection";
+      const templateName = isSelected
+        ? "booking-confirmation"
+        : "booking-rejection";
       const html = await renderEmailTemplate(templateName, {
         name: booking.name,
         dateAndTime: niceDateFormatter.format(booking.bookingDate.date),
         bookingRef: booking.id.toString(),
       });
       // TODO: integrate actual email sending service here.
-      console.log(`Sending ${isSelected ? "CONFIRMED" : "REJECTED"} email to ${booking.email}`);
+      console.log(
+        `Sending ${isSelected ? "CONFIRMED" : "REJECTED"} email to ${booking.email}`,
+      );
       console.log(html.html.substring(0, 200));
     }
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (err) {
     console.error("Error processing bookings:", err);
-    return new Response(JSON.stringify({ error: "Failed to process bookings" }), {
-      status: 500,
-    });
+    return new Response(
+      JSON.stringify({ error: "Failed to process bookings" }),
+      {
+        status: 500,
+      },
+    );
   }
 }
