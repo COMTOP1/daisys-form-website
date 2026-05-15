@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { z } from "zod";
-import { addBooking, print } from "@/app/(cheese-and-wine)/book/handle";
+import { addBooking } from "@/app/(cheese-and-wine)/book/handle";
 import { niceDateFormatter } from "@/lib/dateFormatter";
 
 export default function BookingForm({
@@ -68,8 +68,6 @@ export default function BookingForm({
     }
     const booking = result.data;
 
-    console.log("Booking submitted");
-    await print(booking);
     await addBooking(booking);
     window.location.href = "/book/thank-you";
   };
