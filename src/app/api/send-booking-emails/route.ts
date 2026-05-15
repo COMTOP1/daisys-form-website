@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { renderEmailTemplate } from "@/lib/emailTemplate";
 import { niceDateFormatter } from "@/lib/dateFormatter";
+import { sendEmail } from "@/lib/mailer";
 
 export async function POST(req: Request) {
   try {
@@ -72,19 +73,24 @@ export async function POST(req: Request) {
       needsEmailIds.has(b.id),
     )) {
       const isSelected = selectedSet.has(booking.id);
+      const dateAndTime = niceDateFormatter.format(booking.bookingDate.date);
       const templateName = isSelected
         ? "booking-confirmation"
         : "booking-rejection";
+
       const html = await renderEmailTemplate(templateName, {
         name: booking.name,
-        dateAndTime: niceDateFormatter.format(booking.bookingDate.date),
+        dateAndTime,
         bookingRef: booking.id.toString(),
       });
-      // TODO: integrate actual email sending service here.
-      console.log(
-        `Sending ${isSelected ? "CONFIRMED" : "REJECTED"} email to ${booking.email}`,
-      );
-      console.log(html.html.substring(0, 200));
+
+      await sendEmail({
+        to: booking.email,
+        subject: isSelected
+          ? `Your Cheese & Wine booking is confirmed – ${dateAndTime}`
+          : `Your Cheese & Wine booking was unsuccessful – ${dateAndTime}`,
+        html,
+      });
     }
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });
