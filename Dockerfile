@@ -1,4 +1,4 @@
-FROM node:24.12.0-trixie-slim AS build
+FROM node:26.1-trixie-slim AS build
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends openssl && \
@@ -36,7 +36,7 @@ RUN npx tsc -p tsconfig.cron.json
 
 RUN npm prune --omit=dev
 
-FROM node:24.12.0-trixie-slim AS runtime
+FROM node:26.1.0-trixie-slim AS runtime
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
