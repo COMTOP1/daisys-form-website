@@ -2,7 +2,6 @@
 
 import { DragEvent, useState } from "react";
 import { AssignmentStatus, BookingStatus } from "../../generated/prisma/enums";
-import { bookingsDateFormatter } from "@/lib/dateFormatter";
 
 export default function DateBookingArrangingPage({
   date,
@@ -19,6 +18,7 @@ export default function DateBookingArrangingPage({
     } & {
       id: number;
       createdAt: Date;
+      createdAtFormatted: string;
       name: string;
       status: BookingStatus;
       email: string;
@@ -38,6 +38,7 @@ export default function DateBookingArrangingPage({
 }) {
   const [submitted, setSubmitted] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [selected, setSelected] = useState(
     date?.bookings.filter((b) => b.status === "CONFIRMED") || [],
   );
@@ -74,20 +75,24 @@ export default function DateBookingArrangingPage({
 
   const handleConfirm = async () => {
     setShowModal(false);
-    const response = await fetch("/api/send-booking-emails", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        bookingIds: selected.map((b) => b.id),
-        dateId: date.id,
-      }),
-    });
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Email process result:", data);
-      setSubmitted(true);
-    } else {
-      console.error("Failed to process bookings");
+    setSubmitError(null);
+    try {
+      const response = await fetch("/api/send-booking-emails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bookingIds: selected.map((b) => b.id),
+          dateId: date.id,
+        }),
+      });
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        const data = await response.json().catch(() => ({}));
+        setSubmitError(data.error ?? "Submission failed. Please try again.");
+      }
+    } catch {
+      setSubmitError("Network error. Please check your connection and try again.");
     }
   };
 
@@ -119,7 +124,7 @@ export default function DateBookingArrangingPage({
                 style={{ cursor: "grab", background: "#4a4a4a" }}
               >
                 {b.name} (<b>{b.people}</b> seats) – Booked at:{" "}
-                {bookingsDateFormatter.format(new Date(b.createdAt))}
+                {b.createdAtFormatted}
               </li>
             ))}
           </ul>
@@ -155,7 +160,7 @@ export default function DateBookingArrangingPage({
                 style={{ cursor: "grab", background: "#4a4a4a" }}
               >
                 {b.name} (<b>{b.people}</b> seats) –{" "}
-                {bookingsDateFormatter.format(new Date(b.createdAt))}
+                {b.createdAtFormatted}
               </li>
             ))}
           </ul>
@@ -164,6 +169,9 @@ export default function DateBookingArrangingPage({
       <button onClick={handleSubmit} disabled={submitted}>
         Submit Selected
       </button>
+      {submitError && (
+        <p className="mt-2 text-red-500">{submitError}</p>
+      )}
 
       {showModal && (
         <div
