@@ -11,10 +11,9 @@ const templateCache = new Map<string, TemplateCache>();
 
 export async function renderEmailTemplate(
   templateName: string,
-  variables: Record<string, any>,
-) {
+  variables: Record<string, string | number>,
+): Promise<string> {
   let cached = templateCache.get(templateName);
-  console.log(cached);
 
   if (!cached) {
     const filePath = path.join(
@@ -22,25 +21,19 @@ export async function renderEmailTemplate(
       "src/templates",
       `${templateName}.mjml`,
     );
-    console.log(filePath);
-
     const mjmlContent = fs.readFileSync(filePath, "utf-8");
-    console.log(mjmlContent);
-
-    const compiled = Handlebars.compile(mjmlContent);
-    console.log(compiled);
-
-    cached = { compiled };
+    cached = { compiled: Handlebars.compile(mjmlContent) };
     templateCache.set(templateName, cached);
   }
 
-  // 1. Inject variables into MJML
   const mjmlWithData = cached.compiled(variables);
-  console.log(mjmlWithData);
+  const { html, errors } = mjml2html(mjmlWithData);
 
-  // 2. Convert MJML → HTML
-  const html = mjml2html(mjmlWithData);
-  console.log(html);
+  if (errors.length > 0) {
+    throw new Error(
+      `MJML errors in ${templateName}: ${errors.map((e) => e.formattedMessage).join(", ")}`,
+    );
+  }
 
   return html;
 }
