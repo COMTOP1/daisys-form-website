@@ -3,6 +3,7 @@ import DateBookingArrangingPage from "@/components/DateBookingArrangingPage";
 import Image from "next/image";
 import React from "react";
 import { bookingsDateFormatter, dateFormatter } from "@/lib/dateFormatter";
+import { revalidatePath } from "next/cache";
 
 export default async function BookingByDate({
   params,
@@ -37,9 +38,22 @@ export default async function BookingByDate({
     return <p>Date not found</p>;
   }
 
-  // for (let i = 0; i < date.bookings.length; i++) {
-  //   date.bookings[i].createdAtFormatted = bookingsDateFormatter.format(new Date(date.bookings[i].createdAt))
-  // }
+  const formattedDate = {
+    ...date,
+    bookings: date.bookings.map((b) => ({
+      ...b,
+      createdAtFormatted: bookingsDateFormatter.format(b.createdAt),
+    })),
+  };
+
+  const reopenDate = async () => {
+    "use server";
+    await prisma.availableDates.update({
+      where: { id },
+      data: { bookedUp: false },
+    });
+    revalidatePath(`/admin/bookings/by-date/${id}`);
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center font-sans baseColour">
@@ -50,11 +64,29 @@ export default async function BookingByDate({
           className={"max-w-xs mx-auto p-3"}
           width={300}
           height={200}
+          priority
         />
         <a href={"/admin/bookings/by-date"}>&#8592; Return to table</a>
-        <h1 className="text-2xl font-semibold mb-4">
-          Bookings Management for {dateFormatter.format(date.date)}
-        </h1>
+        <div className="flex items-center gap-4 mt-4 mb-2 w-full">
+          <h1 className="text-2xl font-semibold">
+            Bookings Management for {dateFormatter.format(date.date)}
+          </h1>
+          {date.bookedUp && (
+            <span className="rounded-full px-2 py-0.5 bg-green-700 text-white text-sm">
+              Confirmed
+            </span>
+          )}
+        </div>
+        {date.bookedUp && (
+          <form action={reopenDate} className="mb-4">
+            <button
+              type="submit"
+              className="bg-yellow-700 hover:bg-yellow-800 text-white px-3 py-1 rounded text-sm"
+            >
+              Re-open date
+            </button>
+          </form>
+        )}
         <p>
           Below you will have both the unselected bookings and selected
           bookings.
@@ -71,7 +103,7 @@ export default async function BookingByDate({
           </i>
         </p>
         <div className="overflow-x-auto w-full">
-          <DateBookingArrangingPage date={date}></DateBookingArrangingPage>
+          <DateBookingArrangingPage date={formattedDate}></DateBookingArrangingPage>
         </div>
       </main>
     </div>
