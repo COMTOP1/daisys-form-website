@@ -1,10 +1,10 @@
 <mjml>
   <mj-body>
-    <mj-section background-color="#4a4a4a" text-align="center">
+    <mj-hero background-color="#4a4a4a">
       <mj-image
         src="https://github.com/COMTOP1/daisys-form-website/blob/main/public/cheese-and-wine-logo.png?raw=true"
       ></mj-image>
-    </mj-section>
+    </mj-hero>
     <mj-section>
       <mj-column>
         <mj-text font-size="20px" font-weight="bold">
