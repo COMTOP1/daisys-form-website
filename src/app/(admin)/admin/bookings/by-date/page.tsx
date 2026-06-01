@@ -16,23 +16,21 @@ export default async function BookingsByDate() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center font-sans baseColour">
-      <main className="flex min-h-screen w-full max-w-5xl flex-col items-center py-16 px-8 mainColour sm:items-start">
-        <Image
-          src={"/daisys-logo.png"}
-          alt={"default logo"}
-          className={"max-w-xs mx-auto p-3"}
-          width={300}
-          height={200}
-        />
-        <h1 className="text-2xl font-semibold mb-4">
-          Bookings Management by dates
-        </h1>
-        <p>Please select a date from the table below to manage bookings</p>
-        <div className="overflow-x-auto w-full">
-          <BookingsByDateTable dates={dates} />
-        </div>
-      </main>
+    <div className="flex min-h-screen w-full max-w-5xl flex-col items-center py-16 px-8 mainColour sm:items-start">
+      <Image
+        src={"/daisys-logo.png"}
+        alt={"default logo"}
+        className={"max-w-xs mx-auto p-3"}
+        width={300}
+        height={200}
+      />
+      <h1 className="text-2xl font-semibold mb-4">
+        Bookings Management by dates
+      </h1>
+      <p>Please select a date from the table below to manage bookings</p>
+      <div className="overflow-x-auto w-full">
+        <BookingsByDateTable dates={dates} />
+      </div>
     </div>
   );
 }

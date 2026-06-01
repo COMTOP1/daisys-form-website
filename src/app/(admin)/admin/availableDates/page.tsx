@@ -17,8 +17,7 @@ export default async function BookingsByDates({
   const dates = await getDates({ includePast: includePast, page: page });
 
   return (
-    <div className="flex min-h-screen items-center justify-center font-sans baseColour">
-      <main className="flex min-h-screen w-full max-w-5xl flex-col items-center py-16 px-8 mainColour sm:items-start">
+      <div className="flex min-h-screen w-full max-w-5xl flex-col items-center py-16 px-8 mainColour sm:items-start">
         <Image
           src={"/daisys-logo.png"}
           alt={"default logo"}
@@ -31,7 +30,6 @@ export default async function BookingsByDates({
           <AvailableDatesTable dates={dates} />
         </div>
         <AvailableDatesForm />
-      </main>
-    </div>
+      </div>
   );
 }
