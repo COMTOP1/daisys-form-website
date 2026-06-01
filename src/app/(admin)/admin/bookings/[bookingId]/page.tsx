@@ -84,7 +84,9 @@ export default async function BookingDetail({
           </div>
           <div className="flex gap-4">
             <dt className="w-36 font-medium text-gray-400">Comment</dt>
-            <dd>{booking.comment ?? <span className="text-gray-500">—</span>}</dd>
+            <dd>
+              {booking.comment ?? <span className="text-gray-500">—</span>}
+            </dd>
           </div>
           <div className="flex gap-4">
             <dt className="w-36 font-medium text-gray-400">Status</dt>
@@ -103,9 +105,11 @@ export default async function BookingDetail({
           <div className="flex gap-4">
             <dt className="w-36 font-medium text-gray-400">Email sent</dt>
             <dd>
-              {booking.emailSentAt
-                ? bookingsDateFormatter.format(booking.emailSentAt)
-                : <span className="text-gray-500">Not sent</span>}
+              {booking.emailSentAt ? (
+                bookingsDateFormatter.format(booking.emailSentAt)
+              ) : (
+                <span className="text-gray-500">Not sent</span>
+              )}
             </dd>
           </div>
         </dl>

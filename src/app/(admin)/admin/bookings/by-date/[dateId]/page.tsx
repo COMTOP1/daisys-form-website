@@ -103,7 +103,9 @@ export default async function BookingByDate({
           </i>
         </p>
         <div className="overflow-x-auto w-full">
-          <DateBookingArrangingPage date={formattedDate}></DateBookingArrangingPage>
+          <DateBookingArrangingPage
+            date={formattedDate}
+          ></DateBookingArrangingPage>
         </div>
       </main>
     </div>

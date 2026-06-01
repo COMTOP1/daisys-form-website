@@ -92,7 +92,9 @@ export default function DateBookingArrangingPage({
         setSubmitError(data.error ?? "Submission failed. Please try again.");
       }
     } catch {
-      setSubmitError("Network error. Please check your connection and try again.");
+      setSubmitError(
+        "Network error. Please check your connection and try again.",
+      );
     }
   };
 
@@ -159,8 +161,7 @@ export default function DateBookingArrangingPage({
                 onDragStart={(e) => handleDragStart(e, b.id)}
                 style={{ cursor: "grab", background: "#4a4a4a" }}
               >
-                {b.name} (<b>{b.people}</b> seats) –{" "}
-                {b.createdAtFormatted}
+                {b.name} (<b>{b.people}</b> seats) – {b.createdAtFormatted}
               </li>
             ))}
           </ul>
@@ -169,9 +170,7 @@ export default function DateBookingArrangingPage({
       <button onClick={handleSubmit} disabled={submitted}>
         Submit Selected
       </button>
-      {submitError && (
-        <p className="mt-2 text-red-500">{submitError}</p>
-      )}
+      {submitError && <p className="mt-2 text-red-500">{submitError}</p>}
 
       {showModal && (
         <div
