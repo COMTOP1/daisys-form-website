@@ -43,16 +43,22 @@ export default function Pagination({ page = 1, totalPages }: PaginationProps) {
     router.push(`?${params.toString()}`);
   };
 
-  const maxVisible = 3;
+  if (totalPages <= 1) return null;
 
-  const pages = createPageNumbers(page, totalPages, maxVisible);
+  const pages = createPageNumbers(page, totalPages, 3);
+
+  const btnBase =
+    "flex items-center justify-center h-8 min-w-8 rounded border text-sm transition-colors disabled:opacity-40";
+  const btnIdle =
+    "border-gray-500/50 text-gray-300 hover:bg-white/10 hover:text-white";
+  const btnActive = "border-green-600 bg-green-700 text-white";
 
   return (
-    <div className="flex justify-center mt-6 gap-2 py-4 px-4">
+    <div className="flex justify-center mt-6 gap-1.5 py-4">
       <button
         onClick={() => handlePageChange(1)}
         disabled={page === 1}
-        className="px-3 py-1 border rounded w-16 h-8 disabled:opacity-50 hover:bg-gray-100"
+        className={`${btnBase} ${btnIdle} px-3`}
       >
         First
       </button>
@@ -60,25 +66,24 @@ export default function Pagination({ page = 1, totalPages }: PaginationProps) {
       <button
         onClick={() => handlePageChange(page - 1)}
         disabled={page === 1}
-        className="px-2 py-1 border rounded w-9 h-8 disabled:opacity-50 hover:bg-gray-100"
+        className={`${btnBase} ${btnIdle} px-2`}
       >
-        <ChevronLeft size={18} />
+        <ChevronLeft size={16} />
       </button>
 
       {pages.map((p, i) =>
         p === "..." ? (
-          <span key={`ellipsis-${i}-${page}`} className="px-2 text-gray-500">
-            ...
+          <span
+            key={`ellipsis-${i}-${page}`}
+            className="flex items-center px-2 text-gray-500 text-sm"
+          >
+            …
           </span>
         ) : (
           <button
             key={`page-${p}`}
             onClick={() => handlePageChange(p as number)}
-            className={`px-3 py-1 rounded border min-w-8 h-8 ${
-              page === p
-                ? "bg-blue-600 text-white border-blue-600"
-                : "border-gray-300 hover:bg-gray-100"
-            }`}
+            className={`${btnBase} px-3 ${page === p ? btnActive : btnIdle}`}
           >
             {p}
           </button>
@@ -88,15 +93,15 @@ export default function Pagination({ page = 1, totalPages }: PaginationProps) {
       <button
         onClick={() => handlePageChange(page + 1)}
         disabled={page === totalPages}
-        className="px-2 py-1 min-w-8 h-8 border rounded disabled:opacity-50 hover:bg-gray-100"
+        className={`${btnBase} ${btnIdle} px-2`}
       >
-        <ChevronRight size={18} />
+        <ChevronRight size={16} />
       </button>
 
       <button
         onClick={() => handlePageChange(totalPages)}
         disabled={page === totalPages}
-        className="px-3 py-1 w-16 h-8 border rounded disabled:opacity-50 hover:bg-gray-100"
+        className={`${btnBase} ${btnIdle} px-3`}
       >
         Last
       </button>
