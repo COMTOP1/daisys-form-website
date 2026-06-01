@@ -1,7 +1,14 @@
 import fs from "fs";
 import path from "path";
-import mjml2html from "mjml";
 import Handlebars from "handlebars";
+
+// Use require to get the raw CJS export of mjml, bypassing Turbopack's ESM/CJS
+// interop transform which causes the async wrapper to resolve to a JSON string
+// instead of the expected { html, errors } object.
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const mjml2html = require("mjml") as (
+  input: string,
+) => Promise<{ html: string; errors: { formattedMessage: string }[] }>;
 
 type TemplateCache = {
   compiled: Handlebars.TemplateDelegate;
@@ -27,7 +34,7 @@ export async function renderEmailTemplate(
   }
 
   const mjmlWithData = cached.compiled(variables);
-  const { html, errors } = mjml2html(mjmlWithData);
+  const { html, errors } = await mjml2html(mjmlWithData);
 
   if (errors.length > 0) {
     throw new Error(
