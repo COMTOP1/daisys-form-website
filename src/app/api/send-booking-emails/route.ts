@@ -97,7 +97,7 @@ export async function POST(req: Request) {
   } catch (err) {
     console.error("Error processing bookings:", err);
     return new Response(
-      JSON.stringify({ error: "Failed to process bookings" }),
+      JSON.stringify({ msg: "Failed to process bookings", error: err }),
       {
         status: 500,
       },
