@@ -113,34 +113,11 @@ export default function Sidebar() {
             <span className="truncate">Home</span>
           </Link>
 
-          {/*<Link href={`/users/${userId}`} className={linkStyle}>*/}
-          {/*  <SquareUserRound className={iconStyle} />*/}
-          {/*  <span className="truncate">Account</span>*/}
-          {/*</Link>*/}
-
-          <Link href="/editions" className={linkStyle}>
-            <NewspaperIcon className={iconStyle} />
-            <span className="truncate">Editions</span>
-          </Link>
-
           <span className={separatorStyle}>Bookings</span>
 
-          {/*<Link*/}
-          {/*  href={userId ? `/articles?user=${userId}` : "/articles"}*/}
-          {/*  className={linkStyle}*/}
-          {/*>*/}
-          {/*  <IdCard className={iconStyle} />*/}
-          {/*  <span className="truncate">My Articles</span>*/}
-          {/*</Link>*/}
-
-          <Link href="/admin/bookings" className={linkStyle}>
+          <Link href="/admin/bookings/by-date" className={linkStyle}>
             <Files className={iconStyle} />
-            <span className="truncate">All Bookings</span>
-          </Link>
-
-          <Link href="/featured" className={linkStyle}>
-            <FileChartPie className={iconStyle} />
-            <span className="truncate">Featured Articles</span>
+            <span className="truncate">Bookings by Date</span>
           </Link>
 
           <span className={separatorStyle}>Available Dates</span>
@@ -166,14 +143,14 @@ export default function Sidebar() {
             </Link>
           )}
 
-          <Link
-            href="https://docs.nouse.co.uk"
-            className={linkStyle}
-            target={"_blank"}
-          >
-            <BookOpen className={iconStyle} />
-            <span className="truncate">Docs</span>
-          </Link>
+          {/*<Link*/}
+          {/*  href="https://docs.nouse.co.uk"*/}
+          {/*  className={linkStyle}*/}
+          {/*  target={"_blank"}*/}
+          {/*>*/}
+          {/*  <BookOpen className={iconStyle} />*/}
+          {/*  <span className="truncate">Docs</span>*/}
+          {/*</Link>*/}
         </nav>
 
         {/* Footer */}
