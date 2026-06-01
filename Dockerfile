@@ -15,6 +15,8 @@ RUN npx next telemetry disable
 COPY prisma ./prisma
 COPY tsconfig*.json ./
 COPY next.config.ts ./
+COPY postcss.config.mjs ./
+COPY tailwind.config.ts ./
 COPY public ./public
 COPY scripts ./scripts
 COPY src ./src
