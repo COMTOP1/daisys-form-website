@@ -1,0 +1,33 @@
+<mjml>
+  <mj-body>
+    <mj-hero background-color="#4a4a4a">
+      <mj-image
+        src="https://github.com/COMTOP1/daisys-form-website/blob/main/public/daisys-logo.png?raw=true"
+      ></mj-image>
+    </mj-hero>
+    <mj-section>
+      <mj-column>
+        <mj-text font-size="20px" font-weight="bold">
+          Bookings for {{ dateAndTime }} have reached capacity
+        </mj-text>
+
+        <mj-text>
+          The booking list for {{ dateAndTime }} has reached
+          {{ maxSpaces }} seats. There are currently
+          {{ totalBookings }} bookings totalling {{ totalSeats }} seats.
+        </mj-text>
+
+        <mj-text>
+          New bookings will continue to be accepted until you confirm the date.
+          Please log in to the admin panel to review and confirm selections.
+        </mj-text>
+
+        <mj-button href="{{ adminUrl }}/admin/bookings/by-date/{{ dateId }}">
+          Review Bookings
+        </mj-button>
+
+        <mj-text> Team Daisy &#127804; </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
