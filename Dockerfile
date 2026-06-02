@@ -1,4 +1,4 @@
-FROM node:22-bookworm-slim AS build
+FROM node:20-bookworm-slim AS build
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends openssl && \
@@ -38,7 +38,7 @@ RUN npx tsc -p tsconfig.cron.json
 
 RUN npm prune --omit=dev
 
-FROM node:22-bookworm-slim AS runtime
+FROM node:20-bookworm-slim AS runtime
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
