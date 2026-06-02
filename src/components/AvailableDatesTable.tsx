@@ -122,9 +122,7 @@ export default function AvailableDatesTable({
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-300">
                       <span
-                        className={
-                          isFull ? "text-red-400" : "text-gray-300"
-                        }
+                        className={isFull ? "text-red-400" : "text-gray-300"}
                       >
                         {d.bookings.length}
                       </span>

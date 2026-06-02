@@ -110,9 +110,7 @@ export default function BookingsByDateTable({
                         : "hover:bg-white/10"
                     }`}
                   >
-                    <td className="px-4 py-3 text-sm text-gray-300">
-                      {d.id}
-                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-300">{d.id}</td>
                     <td className="px-4 py-3 text-sm font-medium text-white">
                       {d.formattedDate}
                     </td>

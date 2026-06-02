@@ -17,19 +17,19 @@ export default async function BookingsByDates({
   const dates = await getDates({ includePast: includePast, page: page });
 
   return (
-      <div className="flex min-h-screen w-full max-w-5xl flex-col items-center py-16 px-8 mainColour sm:items-start">
-        <Image
-          src={"/daisys-logo.png"}
-          alt={"default logo"}
-          className={"max-w-xs mx-auto p-3"}
-          width={300}
-          height={200}
-        />
-        <h1 className="text-2xl font-semibold mb-4">Available Dates</h1>
-        <div className="overflow-x-auto w-full">
-          <AvailableDatesTable dates={dates} />
-        </div>
-        <AvailableDatesForm />
+    <div className="flex min-h-screen w-full max-w-5xl flex-col items-center py-16 px-8 mainColour sm:items-start">
+      <Image
+        src={"/daisys-logo.png"}
+        alt={"default logo"}
+        className={"max-w-xs mx-auto p-3"}
+        width={300}
+        height={200}
+      />
+      <h1 className="text-2xl font-semibold mb-4">Available Dates</h1>
+      <div className="overflow-x-auto w-full">
+        <AvailableDatesTable dates={dates} />
       </div>
+      <AvailableDatesForm />
+    </div>
   );
 }

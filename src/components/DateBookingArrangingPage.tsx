@@ -44,7 +44,10 @@ function BookingCard({
       <span className="font-medium">{booking.name}</span>
       <span className="text-gray-400"> &mdash; </span>
       <span className="font-semibold">{booking.people}</span>
-      <span className="text-gray-400"> seat{booking.people !== 1 ? "s" : ""}</span>
+      <span className="text-gray-400">
+        {" "}
+        seat{booking.people !== 1 ? "s" : ""}
+      </span>
       <span className="text-gray-500 text-xs ml-2">
         Booked {booking.createdAtFormatted}
       </span>
@@ -55,7 +58,11 @@ function BookingCard({
   );
 }
 
-function ConfirmedView({ date }: { date: { bookings: Booking[]; maxSpaces: number } }) {
+function ConfirmedView({
+  date,
+}: {
+  date: { bookings: Booking[]; maxSpaces: number };
+}) {
   const confirmed = date.bookings.filter((b) => b.status === "CONFIRMED");
   const rejected = date.bookings.filter((b) => b.status !== "CONFIRMED");
   const confirmedSeats = confirmed.reduce((sum, b) => sum + b.people, 0);
@@ -96,7 +103,10 @@ function ConfirmedView({ date }: { date: { bookings: Booking[]; maxSpaces: numbe
                 <span className="font-medium text-white">{b.name}</span>
                 <span className="text-gray-400"> &mdash; </span>
                 <span className="font-semibold text-white">{b.people}</span>
-                <span className="text-gray-400"> seat{b.people !== 1 ? "s" : ""}</span>
+                <span className="text-gray-400">
+                  {" "}
+                  seat{b.people !== 1 ? "s" : ""}
+                </span>
                 <span className="text-gray-500 text-xs ml-2">
                   Booked {b.createdAtFormatted}
                 </span>
@@ -264,7 +274,9 @@ export default function DateBookingArrangingPage({
       >
         {submitted ? "Submitted" : "Submit Selected"}
       </button>
-      {submitError && <p className="mt-2 text-sm text-red-400">{submitError}</p>}
+      {submitError && (
+        <p className="mt-2 text-sm text-red-400">{submitError}</p>
+      )}
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
@@ -274,10 +286,14 @@ export default function DateBookingArrangingPage({
             </h2>
             <p className="mb-1 text-sm text-gray-300">
               You are about to confirm{" "}
-              <span className="font-semibold text-white">{selected.length}</span>{" "}
-              booking{selected.length !== 1 ? "s" : ""} ({selectedSeats} seats) and
-              reject{" "}
-              <span className="font-semibold text-white">{unselected.length}</span>{" "}
+              <span className="font-semibold text-white">
+                {selected.length}
+              </span>{" "}
+              booking{selected.length !== 1 ? "s" : ""} ({selectedSeats} seats)
+              and reject{" "}
+              <span className="font-semibold text-white">
+                {unselected.length}
+              </span>{" "}
               booking{unselected.length !== 1 ? "s" : ""}.
             </p>
             <p className="mb-6 text-sm text-gray-400 italic">
