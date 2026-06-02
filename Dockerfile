@@ -77,9 +77,9 @@ COPY docker/start.sh /app/start.sh
 
 RUN chmod +x /app/start.sh
 
-RUN useradd -m nodeuser
+#RUN useradd -m nodeuser
 
-RUN chown -R nodeuser:nodeuser /app
+#RUN chown -R nodeuser:nodeuser /app
 
 # Start cron in background and then start Next.js server
 ENTRYPOINT ["/app/start.sh"]

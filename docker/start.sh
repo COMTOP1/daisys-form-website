@@ -4,4 +4,5 @@ printenv | grep -v "no_proxy" >> /etc/environment #Required to include environme
 
 cron &
 
-su nodeuser -c "npm run start"
+#su nodeuser -c "npm run start"
+npm run start
