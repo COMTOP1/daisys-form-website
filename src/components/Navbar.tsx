@@ -108,7 +108,7 @@ export default function Sidebar() {
 
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto py-4 space-y-1">
-          <Link href="/" className={linkStyle}>
+          <Link href="/admin" className={linkStyle}>
             <Home className={iconStyle} />
             <span className="truncate">Home</span>
           </Link>
