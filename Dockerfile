@@ -36,7 +36,7 @@ RUN npm run build
 # Make sure tsconfig.cron.json exists in project root
 RUN npx tsc -p tsconfig.cron.json
 
-RUN npm prune --omit=dev
+RUN #npm prune --omit=dev
 
 FROM node:26-trixie-slim AS runtime
 
